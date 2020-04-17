@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "508874144802",
+    "firebase_url": "https://vexillum-38390.firebaseio.com",
+    "project_id": "vexillum-38390",
+    "storage_bucket": "vexillum-38390.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:508874144802:android:819c339519b635d92cde7b",
+        "android_client_info": {
+          "package_name": "com.example.vexillum"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "508874144802-kehs61l7klh6afa879hf76tqtkupqddv.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.vexillum",
+            "certificate_hash": "02424a95daa5ef403c4fa6ef6295471c3598e263"
+          }
+        },
+        {
+          "client_id": "508874144802-9qg0n95aqghnntfgp3247nhqd7ptl5bj.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC0SUEPwkzS0iWV8bqYoFkiSlVVRWmi82Q"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "508874144802-9qg0n95aqghnntfgp3247nhqd7ptl5bj.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
