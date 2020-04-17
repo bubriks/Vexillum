@@ -12,6 +12,7 @@ import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.os.Parcelable;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.KeyEvent;
@@ -25,8 +26,11 @@ import android.widget.Toast;
 
 import com.example.vexillum.MainActivity;
 import com.example.vexillum.R;
+import com.example.vexillum.data.model.LoggedInUser;
 import com.example.vexillum.ui.login.LoginViewModel;
 import com.example.vexillum.ui.login.LoginViewModelFactory;
+
+import java.io.Serializable;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -75,9 +79,14 @@ public class LoginActivity extends AppCompatActivity {
                 }
                 setResult(Activity.RESULT_OK);
 
-                Intent myIntent = new Intent(getBaseContext(), MainActivity.class);
-                //myIntent.putExtra("key", value); //Optional parameters
-                startActivity(myIntent);
+                //Bundle bundle = new Bundle();
+                //bundle.putSerializable("LoggedInUser", (Serializable) loginResult.getSuccess());
+                //Intent myIntent = new Intent(getBaseContext(), MainActivity.class);
+
+                //startActivity(myIntent);
+                Intent intent = new Intent(getBaseContext(), MainActivity.class);
+                intent.putExtra("LoggedInUser", loginResult.getSuccess());
+                startActivity(intent);
 
                 //Complete and destroy login activity once successful
                 //finish();
@@ -125,7 +134,7 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
-    private void updateUiWithUser(LoggedInUserView model) {
+    private void updateUiWithUser(LoggedInUser model) {
         String welcome = getString(R.string.welcome) + model.getDisplayName();
         // TODO : initiate successful logged in experience
         Toast.makeText(getApplicationContext(), welcome, Toast.LENGTH_LONG).show();
