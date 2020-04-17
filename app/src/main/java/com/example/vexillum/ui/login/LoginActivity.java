@@ -5,6 +5,7 @@ import android.app.Activity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
@@ -22,6 +23,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.vexillum.MainActivity;
 import com.example.vexillum.R;
 import com.example.vexillum.ui.login.LoginViewModel;
 import com.example.vexillum.ui.login.LoginViewModelFactory;
@@ -73,8 +75,12 @@ public class LoginActivity extends AppCompatActivity {
                 }
                 setResult(Activity.RESULT_OK);
 
+                Intent myIntent = new Intent(getBaseContext(), MainActivity.class);
+                //myIntent.putExtra("key", value); //Optional parameters
+                startActivity(myIntent);
+
                 //Complete and destroy login activity once successful
-                finish();
+                //finish();
             }
         });
 
