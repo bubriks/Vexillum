@@ -62,6 +62,7 @@ public class MainActivity extends AppCompatActivity {
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
 
+        /*
         Intent intent = this.getIntent();
         LoggedInUser loggedInUser = (LoggedInUser) intent.getSerializableExtra("LoggedInUser");
         TextView text = (TextView) navigationView.getHeaderView(0).findViewById(R.id.email);
@@ -70,6 +71,7 @@ public class MainActivity extends AppCompatActivity {
         LocalBroadcastManager lbm = LocalBroadcastManager.getInstance(this);
         lbm.registerReceiver(receiver, new IntentFilter("onMessageReceived"));
         homeViewModel = ViewModelProviders.of(this).get(HomeViewModel.class);
+        */
     }
 
     public BroadcastReceiver receiver = new BroadcastReceiver() {
