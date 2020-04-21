@@ -10,7 +10,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 
 import com.example.vexillum.MainActivity;
-import com.example.vexillum.User;
+import com.example.vexillum.data.model.User;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -30,20 +30,22 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.InstanceIdResult;
 
-public class GoogleSignInActivity extends BaseActivity {
+public class LoginActivity extends BaseActivity {
 
     private static final String TAG = "GoogleActivity";
     private static final int RC_SIGN_IN = 9001;
 
+    //todo dont use static
     public static FirebaseAuth mAuth;
 
+    //todo dont use static
     public static GoogleSignInClient mGoogleSignInClient;
     private TextView mStatusTextView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_google);
+        setContentView(R.layout.activity_login);
 
         mStatusTextView = findViewById(R.id.status);
         setProgressBar(R.id.progressBar);
@@ -145,7 +147,7 @@ public class GoogleSignInActivity extends BaseActivity {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 if(task.isSuccessful()){
-                    Toast.makeText(GoogleSignInActivity.this, "Token saved", Toast.LENGTH_LONG).show();
+                    Toast.makeText(LoginActivity.this, "Token saved", Toast.LENGTH_LONG).show();
                 }
             }
         });

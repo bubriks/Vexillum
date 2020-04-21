@@ -4,33 +4,23 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.media.Image;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Menu;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.vexillum.data.model.LoggedInUser;
-import com.example.vexillum.ui.home.HomeFragment;
 import com.example.vexillum.ui.home.HomeViewModel;
-import com.example.vexillum.ui.login.GoogleSignInActivity;
+import com.example.vexillum.ui.login.LoginActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.navigation.NavigationView;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.iid.FirebaseInstanceId;
-import com.google.firebase.iid.InstanceIdResult;
+import com.squareup.picasso.Picasso;
 
 import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.navigation.NavController;
@@ -40,8 +30,6 @@ import androidx.navigation.ui.NavigationUI;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-
-import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -74,24 +62,28 @@ public class MainActivity extends AppCompatActivity {
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
 
-        TextView text = (TextView) navigationView.getHeaderView(0).findViewById(R.id.email);
-        text.setText(GoogleSignInActivity.mAuth.getCurrentUser().getEmail());
+        //todo new stuff
+        TextView email = navigationView.getHeaderView(0).findViewById(R.id.email);
+        email.setText(LoginActivity.mAuth.getCurrentUser().getEmail());
 
-        TextView text1 = (TextView) navigationView.getHeaderView(0).findViewById(R.id.username);
-        text1.setText(GoogleSignInActivity.mAuth.getCurrentUser().getDisplayName());
+        TextView username = navigationView.getHeaderView(0).findViewById(R.id.username);
+        username.setText(LoginActivity.mAuth.getCurrentUser().getDisplayName());
+
+        ImageView image = navigationView.getHeaderView(0).findViewById(R.id.imageView);
+        Picasso.get().load(LoginActivity.mAuth.getCurrentUser().getPhotoUrl()).into(image);
 
         navigationView.getHeaderView(0).findViewById(R.id.signOutButton).setOnClickListener(
                 new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                GoogleSignInActivity.mAuth.signOut();
+                LoginActivity.mAuth.signOut();
 
                 // Google sign out
-                GoogleSignInActivity.mGoogleSignInClient.signOut().addOnCompleteListener(
+                LoginActivity.mGoogleSignInClient.signOut().addOnCompleteListener(
                         new OnCompleteListener<Void>() {
                             @Override
                             public void onComplete(@NonNull Task<Void> task) {
-                                Intent intent = new Intent(getBaseContext(), GoogleSignInActivity.class);
+                                Intent intent = new Intent(getBaseContext(), LoginActivity.class);
                                 startActivity(intent);
                             }
                         });

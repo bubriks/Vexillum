@@ -1,4 +1,4 @@
-package com.example.vexillum;
+package com.example.vexillum.data.model;
 
 public class User {
 
