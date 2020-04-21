@@ -2,8 +2,8 @@ package com.example.vexillum;
 
 public class User {
 
-    private String email;
-    private String token;
+    public String email;
+    public String token;
 
     public User(String email, String token) {
         this.email = email;
