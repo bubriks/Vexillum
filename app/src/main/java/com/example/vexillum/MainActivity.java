@@ -12,15 +12,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.vexillum.ui.home.HomeViewModel;
-import com.example.vexillum.ui.login.LoginActivity;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.navigation.NavigationView;
+import com.google.firebase.auth.FirebaseAuth;
 import com.squareup.picasso.Picasso;
 
-import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.navigation.NavController;
@@ -62,31 +59,22 @@ public class MainActivity extends AppCompatActivity {
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
 
-        //todo new stuff
+        //sets up info
         TextView email = navigationView.getHeaderView(0).findViewById(R.id.email);
-        email.setText(LoginActivity.mAuth.getCurrentUser().getEmail());
+        email.setText(FirebaseAuth.getInstance().getCurrentUser().getEmail());
 
         TextView username = navigationView.getHeaderView(0).findViewById(R.id.username);
-        username.setText(LoginActivity.mAuth.getCurrentUser().getDisplayName());
+        username.setText(FirebaseAuth.getInstance().getCurrentUser().getDisplayName());
 
         ImageView image = navigationView.getHeaderView(0).findViewById(R.id.imageView);
-        Picasso.get().load(LoginActivity.mAuth.getCurrentUser().getPhotoUrl()).into(image);
+        Picasso.get().load(FirebaseAuth.getInstance().getCurrentUser().getPhotoUrl()).into(image);
 
         navigationView.getHeaderView(0).findViewById(R.id.signOutButton).setOnClickListener(
                 new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                LoginActivity.mAuth.signOut();
-
-                // Google sign out
-                LoginActivity.mGoogleSignInClient.signOut().addOnCompleteListener(
-                        new OnCompleteListener<Void>() {
-                            @Override
-                            public void onComplete(@NonNull Task<Void> task) {
-                                Intent intent = new Intent(getBaseContext(), LoginActivity.class);
-                                startActivity(intent);
-                            }
-                        });
+                //close this activity and returns to login
+                finish();
             }
         });
 

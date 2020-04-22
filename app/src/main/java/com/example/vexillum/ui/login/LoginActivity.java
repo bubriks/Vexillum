@@ -4,10 +4,12 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.vexillum.MainActivity;
 import com.example.vexillum.data.model.User;
@@ -30,17 +32,16 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.InstanceIdResult;
 
-public class LoginActivity extends BaseActivity {
+public class LoginActivity extends AppCompatActivity {
 
-    private static final String TAG = "GoogleActivity";
-    private static final int RC_SIGN_IN = 9001;
+    private static final String TAG = "LoginActivity";
+    private static final int RC_SIGN_IN = 9001, RC_Main = 1;
 
-    //todo dont use static
-    public static FirebaseAuth mAuth;
-
-    //todo dont use static
-    public static GoogleSignInClient mGoogleSignInClient;
+    private FirebaseAuth mAuth;
+    private GoogleSignInClient mGoogleSignInClient;
+    
     private TextView mStatusTextView;
+    public ProgressBar mProgressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,9 +49,9 @@ public class LoginActivity extends BaseActivity {
         setContentView(R.layout.activity_login);
 
         mStatusTextView = findViewById(R.id.status);
-        setProgressBar(R.id.progressBar);
+        mProgressBar = findViewById(R.id.progressBar);
 
-        findViewById(R.id.signInButton).setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.googleSignInButton).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent signInIntent = mGoogleSignInClient.getSignInIntent();
@@ -68,13 +69,10 @@ public class LoginActivity extends BaseActivity {
         mAuth = FirebaseAuth.getInstance();
     }
 
-
     @Override
     public void onStart() {
         super.onStart();
-        // Check if user is signed in (non-null) and update UI accordingly.
-        FirebaseUser currentUser = mAuth.getCurrentUser();
-        updateUI(currentUser);
+        authenticate();
     }
 
     @Override
@@ -89,14 +87,28 @@ public class LoginActivity extends BaseActivity {
                 firebaseAuthWithGoogle(account);
             } catch (ApiException e) {
                 // Google Sign In failed, update UI appropriately
+                mStatusTextView.setText("Sign in failed");
                 Log.w(TAG, "Google sign in failed", e);
             }
+        }
+        else if (requestCode == RC_Main) {
+            Log.w(TAG, "Logging out");
+            mAuth.signOut();
+
+            // Google sign out
+            mGoogleSignInClient.signOut().addOnCompleteListener(
+                new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        mStatusTextView.setText("Logged out");
+                    }
+                });
         }
     }
 
     private void firebaseAuthWithGoogle(GoogleSignInAccount acct) {
         Log.d(TAG, "firebaseAuthWithGoogle:" + acct.getId());
-        showProgressBar();
+        mProgressBar.setVisibility(View.VISIBLE);
 
         AuthCredential credential = GoogleAuthProvider.getCredential(acct.getIdToken(), null);
         mAuth.signInWithCredential(credential)
@@ -106,20 +118,21 @@ public class LoginActivity extends BaseActivity {
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(TAG, "signInWithCredential:success");
-                            FirebaseUser user = mAuth.getCurrentUser();
-                            updateUI(user);
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "signInWithCredential:failure", task.getException());
                             Snackbar.make(findViewById(R.id.main_layout), "Authentication Failed.", Snackbar.LENGTH_SHORT).show();
-                            updateUI(null);
                         }
+                        authenticate();
                     }
                 });
     }
 
-    private void updateUI(FirebaseUser user) {
-        hideProgressBar();
+    private void authenticate() {
+        FirebaseUser user = mAuth.getCurrentUser();
+        mProgressBar.setVisibility(View.INVISIBLE);
+
+        // Check if user is signed in (non-null).
         if (user != null) {
             FirebaseInstanceId.getInstance().getInstanceId()
                     .addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
@@ -133,7 +146,7 @@ public class LoginActivity extends BaseActivity {
                     });
 
             Intent intent = new Intent(getBaseContext(), MainActivity.class);
-            startActivity(intent);
+            startActivityForResult(intent, RC_Main);
         }
     }
 
