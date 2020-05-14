@@ -1,0 +1,1 @@
+[![Build Status](https://travis-ci.com/bubriks/Vexillum.svg?token=y4NB5cZzss8tCyNyKNzz&branch=master)](https://travis-ci.com/bubriks/Vexillum)
