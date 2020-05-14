@@ -5,7 +5,7 @@ sudo: false
 
 env:
     matrix:
-        - ANDROID_TARGET=android-26 ANDROID_ABI=x86_64
+        - ANDROID_TARGET=android-25 ANDROID_ABI=x86
         - ANDROID_TARGET=android-29 ANDROID_ABI=x86_64-R
     global:
         - ANDROID_API_LEVEL=29
@@ -35,8 +35,8 @@ android:
         - extra-android-m2repository
 
         #system images
-        - sys-img-x86_64-android-26
-        - sys-img-x86_64-R-android-29
+        - sys-img-x86-android-25
+        - sys-img-x86_64-android-29
 
 licenses:
     - 'android-sdk-preview-license-52d11cd2'
