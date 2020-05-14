@@ -16,7 +16,7 @@ before_install:
   - pip install --user codecov    #Install codecov
 
 script:
-  - ./gradlew build --stacktrace
+  - ./gradlew test
 
 after_success:
   - codecov                       #Run codecov
