@@ -4,8 +4,8 @@ sudo: false
 
 env:
     matrix:
-        - ANDROID_TARGET=android-19 ANDROID_ABI=armeabi-v7a
-        - ANDROID_TARGET=android-21 ANDROID_ABI=armeabi-v7a
+        - ANDROID_TARGET=android-25
+        - ANDROID_TARGET=android-29
     global:
         - ADB_INSTALL_TIMEOUT=10    #Time out to 10 mins
 
@@ -43,7 +43,7 @@ licenses:
 before_script:
     - chmod +x gradlew      #Grand permissions
     - android list targets
-    - echo no | android create avd --force --name test --target $ANDROID_TARGET --abi $ANDROID_ABI    #Create AVD for given api
+    - echo no | android create avd --force --name test --target $ANDROID_TARGET  #Create AVD for given api
     - emulator -avd test -no-skin -no-audio -no-window &    #Start emulator
 
 script:
