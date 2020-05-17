@@ -27,6 +27,12 @@ android {
             abortOnError false
         }
     }
+
+    android.testOptions.unitTests.all {
+        testLogging {
+            exceptionFormat = 'full'
+        }
+    }
 }
 
 dependencies {
