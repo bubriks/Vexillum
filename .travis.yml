@@ -48,6 +48,7 @@ cache:
     - $HOME/.android/build-cache
 
 before_install:
+  - chmod +x gradlew
   - ./gradlew --version
   #- yes | sdkmanager "platforms;android-27"
 
