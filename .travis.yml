@@ -60,4 +60,4 @@ before_script:
 
 script:
   # skips predex on travis, takes too long, too much memory
-  ./gradlew testDebugUnitTest -Dpre-dex=false -q
+  ./gradlew testDebugUnitTest -Dpre-dex=false
