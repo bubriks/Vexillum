@@ -20,5 +20,10 @@ android:
 before_install:
   - chmod +x gradlew
 
+before_script:
+  - echo '"Build..."' && echo -en 'travis_fold:start:script.build\\r'
+  - ./gradlew assembleDebugUnitTest -Dpre-dex=false
+  - echo -en 'travis_fold:end:script.build\\r'
+
 script:
   - ./gradlew testDebug
