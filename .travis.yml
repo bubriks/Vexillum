@@ -21,4 +21,4 @@ before_install:
   - chmod +x gradlew
 
 script:
-  - ./gradlew testDebug
+  - ./gradlew --info connectedDebugAndroidTest | grep "com\.example\.vexillum\..* >"
