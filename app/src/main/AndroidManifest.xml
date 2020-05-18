@@ -22,12 +22,19 @@
             </intent-filter>
         </service>
 
-        <activity
-            android:name=".ui.login.LoginActivity">
+        <activity android:name=".ui.login.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <activity android:name=".NotificationActivity">
+            <intent-filter>
+                <action android:name="com.example.vexillum.Notification" />
+
+                <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
     </application>
