@@ -23,9 +23,9 @@ public class FirebaseService extends FirebaseMessagingService {
 
         String click_action = remoteMessage.getNotification().getClickAction();
         Intent intent = new Intent(click_action);
-        intent.putExtra("Body", remoteMessage.getNotification().getBody());
+        intent.putExtra("info", remoteMessage.getData().get("info"));
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        PendingIntent pendingIntent= PendingIntent.getActivity(this,
+        PendingIntent pendingIntent = PendingIntent.getActivity(this,
                 0,
                 intent,
                 PendingIntent.FLAG_ONE_SHOT);
