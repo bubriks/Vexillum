@@ -28,7 +28,16 @@ public class NotificationActivity extends AppCompatActivity {
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        //close this activity and returns to login
+                        //close this activity
+                        finish();
+                    }
+                });
+
+        findViewById(R.id.denyButton).setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        //close this activity
                         finish();
                     }
                 });
