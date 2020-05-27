@@ -72,7 +72,7 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     public void onStart() {
         super.onStart();
-        authenticate();
+        checkIfAuthenticated();
     }
 
     @Override
@@ -123,22 +123,24 @@ public class LoginActivity extends AppCompatActivity {
                             Log.w(TAG, "signInWithCredential:failure", task.getException());
                             Snackbar.make(findViewById(R.id.main_layout), "Authentication Failed.", Snackbar.LENGTH_SHORT).show();
                         }
-                        authenticate();
+                        checkIfAuthenticated();
                     }
                 });
     }
 
-    private void authenticate() {
+    private void checkIfAuthenticated() {
         FirebaseUser user = mAuth.getCurrentUser();
         mProgressBar.setVisibility(View.INVISIBLE);
 
-        // Check if user is signed in (non-null).
         if (user != null) {
             FirebaseInstanceId.getInstance().getInstanceId()
                     .addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
                         @Override
                         public void onComplete(@NonNull Task<InstanceIdResult> task) {
                             if (task.isSuccessful()) {
+                                // Get firebase instance id and save it in database
+                                // (this token is used to identify the device to which notification
+                                // should be sent)
                                 String token = task.getResult().getToken();
                                 saveToken(token);
                             }
@@ -151,7 +153,6 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public void saveToken(String token){
-        FirebaseAuth mAuth = FirebaseAuth.getInstance();
         String email = mAuth.getCurrentUser().getEmail();
         User user = new User(email, token);
 
