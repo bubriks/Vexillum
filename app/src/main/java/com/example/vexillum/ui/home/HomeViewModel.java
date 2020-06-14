@@ -7,12 +7,7 @@ import androidx.lifecycle.ViewModel;
 public class HomeViewModel extends ViewModel {
 
     //todo maybe should not be static
-    private static MutableLiveData<String> mText;
-
-    public HomeViewModel() {
-        mText = new MutableLiveData<>();
-        mText.setValue("This is home fragment");
-    }
+    private static MutableLiveData<String> mText = new MutableLiveData<>();
 
     public void setText(String text){
         mText.setValue(text);

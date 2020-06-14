@@ -84,7 +84,11 @@ public class LoginActivity extends AppCompatActivity {
             try {
                 // Google Sign In was successful, authenticate with Firebase
                 GoogleSignInAccount account = task.getResult(ApiException.class);
-                firebaseAuthWithGoogle(account);
+                Log.d(TAG, "firebaseAuthWithGoogle:" + account.getId());
+                AuthCredential credential = GoogleAuthProvider.getCredential(
+                        account.getIdToken(),
+                        null);
+                firebaseAuth(credential);
             } catch (ApiException e) {
                 // Google Sign In failed, update UI appropriately
                 mStatusTextView.setText("Sign in failed");
@@ -106,11 +110,9 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
-    private void firebaseAuthWithGoogle(GoogleSignInAccount acct) {
-        Log.d(TAG, "firebaseAuthWithGoogle:" + acct.getId());
+    private void firebaseAuth(AuthCredential credential) {
         mProgressBar.setVisibility(View.VISIBLE);
 
-        AuthCredential credential = GoogleAuthProvider.getCredential(acct.getIdToken(), null);
         mAuth.signInWithCredential(credential)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
