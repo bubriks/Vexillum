@@ -5,10 +5,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -26,6 +26,10 @@ import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.squareup.picasso.Picasso;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -80,9 +84,29 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void onReceive(Context context, Intent intent) {
             if (intent != null) {
-                String str = intent.getStringExtra("history");
-                Toast.makeText(getApplicationContext(),str,Toast.LENGTH_SHORT).show();
-                homeViewModel.setText(str);
+                String jsonString = intent.getStringExtra("history");
+
+                Log.d("test", jsonString);
+                try {
+                    JSONObject obj = new JSONObject(jsonString);
+                    JSONArray arr = obj.getJSONArray("history");
+                    String text = "";
+                    for (int i = 0; i < arr.length(); i++)
+                    {
+                        text += "Station name: " + arr.getJSONObject(i).getString("stationName") + "\n";
+                        text += "Fuel type: " + arr.getJSONObject(i).getString("fuelTypeName") + "\n";
+                        text += "Price per liter: " + arr.getJSONObject(i).getString("pricePerUnit") + "\n";
+                        text += "Quantity: " + arr.getJSONObject(i).getString("quantity") + "\n";
+                        text += "Total price: " + arr.getJSONObject(i).getString("priceTotal") + "\n";
+                        text += "Status: " + arr.getJSONObject(i).getString("statusName") + "\n";
+                        text += "\n";
+                    }
+
+                    //Toast.makeText(getApplicationContext(),obj,Toast.LENGTH_SHORT).show();
+                    homeViewModel.setText(text);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
             }
         }
     };

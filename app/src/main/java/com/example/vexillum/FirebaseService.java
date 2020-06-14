@@ -42,7 +42,7 @@ public class FirebaseService extends FirebaseMessagingService {
             Log.d(TAG, "Data");
 
             Intent intent = new Intent("data_message");
-            intent.putExtra("history", remoteMessage.getData().get("history"));
+            intent.putExtra("history", remoteMessage.getData().toString());
             LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
         }
     }
