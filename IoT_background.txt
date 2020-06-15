@@ -1,0 +1,60 @@
+const Wappsto = require('wapp-api');
+let wappsto = new Wappsto();
+var amqp = require('amqplib/callback_api');
+let wappstoConsole = require("wapp-api/console");
+wappstoConsole.start();
+let ReportState;
+
+/* this is Wapp-API function that promts a request to the user that allows to match your device to the installation of this app */
+
+wappsto.get("device", {"name": "pump"}, {
+  "quantity": "1",
+  "expand": 5,
+  "subscribe":true,
+  "success": (collection, response) => {
+    if(collection.length === 1){
+      pump = collection.first();
+      start(pump);
+    }
+  }
+});
+
+function start(pump){
+  console.log("START");
+
+  var value = pump.get("value").findWhere({ name: "nfc_reader" });
+
+  ReportState = value.get("state").findWhere({ type: "Report" });
+
+  send();
+
+  ReportState.on("change:data", function() {
+    send();
+  });
+}
+
+function send() {
+  var reportValue = ReportState.get("data");
+  console.log(reportValue);
+  amqp.connect('amqp://admin:admin@35.228.252.67', function(error0, connection) {
+      if (error0) {
+          throw error0;
+      }
+      connection.createChannel(function(error1, channel) {
+          if (error1) {
+              throw error1;
+          }
+		  var IOT_QUEUE_NAME = "iot_queue";
+          var msg = '{\r\n\t\"StationName\": \"Shell\",\r\n\t\"IotTag\": \"' + reportValue + '\",\r\n\t\"FuelType\": 1,\r\n\t\"Quantity\": 12,\r\n\t\"PricePerUnit\": 12,\r\n\t\"PriceTotal\": 144\r\n}';
+          channel.assertQueue(IOT_QUEUE_NAME, {
+              durable: false
+          });
+          channel.sendToQueue(IOT_QUEUE_NAME, Buffer.from(msg));
+          console.log(" [x] Sent %s- ", msg);
+      });
+      setTimeout(function() {
+          connection.close();
+          process.exit(0);
+      }, 500);
+  });
+}
